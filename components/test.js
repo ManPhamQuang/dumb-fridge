@@ -24,12 +24,6 @@ export default class Test extends React.Component{
         this.state = { foodInFridge: [] };
       }
     componentDidMount(){
-        const query = `query foodInFridge{
-                    allFridges{
-                        name,
-                        entryDate
-                    }
-                }`
         axios({
           url: 'http://171.244.38.17:3000/admin/api',
           method: 'post',
@@ -39,18 +33,23 @@ export default class Test extends React.Component{
           data: {
             query: `
                 query foodInFridge{
-                    allFridges{
+                    allFoods{
                         name,
-                        entryDate
+                        duration,
+                        quantity,
+                        image{
+                          publicUrlTransformed
+                          filename
+                        }
                     }
                 }
             `
           }
         })
         .then(res => {
-            console.log(res.data.data.allFridges[0].name)
+            console.log(res.data.data.allFoods[0].name)
             this.setState({
-              foodInFridge: res.data.data.allFridges
+              foodInFridge: res.data.data.allFoods
             })
         })
         .catch(err => {
@@ -62,7 +61,15 @@ export default class Test extends React.Component{
             <View>
                 {this.state.foodInFridge.map((food, index) => {
                     return(
-                      <Text key={index}>{food.name}</Text>
+                        <View key={index}>
+                            <Text key={index}>{food.name}</Text>
+                            <Image
+                                style={{width: 50, height: 50}} 
+                                source={{uri: food.image.publicUrlTransformed}}
+                            />
+
+                        </View>
+
                     )
                 })}
             </View>
