@@ -18,9 +18,10 @@ export default class Foods extends React.Component{
         this.state = { foodInFridge: [] };
       }
     componentDidMount(){
+        console.log("hello world")
         // Get food
         axios({
-          url: 'http://171.244.38.17:3000/admin/api',
+          url: 'https://dumb-fridge.herokuapp.com/admin/api',
           method: 'post',
           headers: {
             'Content-Type': 'application/json'
@@ -51,20 +52,28 @@ export default class Foods extends React.Component{
             console.log(err)
         })
     }
+
+    handlePress = (item) => {
+        this.props.navigation.navigate('FoodDetail', {
+            item: item
+        })
+    }
     render(){
 
         const FoodCard = ({item}) => {
             // Food Card item
             return(
-                    <Card containerStyle={{padding: 0}} >
-                        <ListItem
-                            roundAvatar
-                            title={item.name}
-                            leftAvatar={{
-                                source: {uri: item.image.publicUrlTransformed}
-                            }}
-                        />
-                    </Card>
+                   <TouchableOpacity onPress={() => this.handlePress(item)}>
+                        <Card containerStyle={{padding: 0}} >
+                            <ListItem
+                                roundAvatar
+                                title={item.name}
+                                leftAvatar={{
+                                    source: {uri: item.image.publicUrlTransformed}
+                                }}
+                            />
+                        </Card>
+                   </TouchableOpacity> 
                 )
         }
 

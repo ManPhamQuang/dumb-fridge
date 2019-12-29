@@ -11,12 +11,14 @@ import {
 } from 'react-native';
 
 import { MonoText } from '../components/StyledText';
-import Foods from '../components/Foods'
 
-export default class HomeScreen extends React.Component {
+export default class FoodScreen extends React.Component {
     constructor(props){
       super(props)
     }
+    // componentDidMount(){
+    //   console.log(this.props.navigation.getParam("item"))
+    // }
     // return (
     //   <View style={styles.container}>
     //       <ScrollView
@@ -30,17 +32,16 @@ export default class HomeScreen extends React.Component {
     //   </View>
     // );
     render(){
+        const { navigation } = this.props;
+        const item = navigation.getParam('item', 'not found')
         return (
-          <View style={{flex: 1, backgroundColor: "#fff"}}>
-              <Foods navigation={this.props.navigation}/>
-          </View>
-        );
+            <View style={{flex: 1, backgroundColor: "#fff"}}>
+                <Text>{item.name}</Text>
+            </View>
+    );
     } 
 }
 
-HomeScreen.navigationOptions = {
-  header: null,
-};
 
 const styles = StyleSheet.create({
   container: {
