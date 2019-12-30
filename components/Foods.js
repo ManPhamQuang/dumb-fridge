@@ -63,17 +63,19 @@ export default class Foods extends React.Component{
         const FoodCard = ({item}) => {
             // Food Card item
             return(
-                   <TouchableOpacity onPress={() => this.handlePress(item)}>
-                        <Card containerStyle={{padding: 0}} >
-                            <ListItem
-                                roundAvatar
-                                title={item.name}
-                                leftAvatar={{
-                                    source: {uri: item.image.publicUrlTransformed}
-                                }}
-                            />
-                        </Card>
-                   </TouchableOpacity> 
+                   <View style={{flex: 1}}>
+                       <TouchableOpacity onPress={() => this.handlePress(item)}>
+                            <Card containerStyle={{padding: 0}} >
+                                <ListItem
+                                    roundAvatar
+                                    title={item.name}
+                                    leftAvatar={{
+                                        source: {uri: item.image.publicUrlTransformed}
+                                    }}
+                                />
+                            </Card>
+                        </TouchableOpacity>
+                   </View> 
                 )
         }
 
@@ -85,6 +87,8 @@ export default class Foods extends React.Component{
                     keyExtractor={(item, index) => {
                         return item.id
                     }}
+                    horizontal={false}
+                    numColumns={2}
                 />
             </View>
         )
