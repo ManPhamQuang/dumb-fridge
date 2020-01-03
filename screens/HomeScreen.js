@@ -31,7 +31,7 @@ export default class HomeScreen extends React.Component {
     // );
     render() {
         return (
-            <View style={{ flex: 1, backgroundColor: '#fff' }}>
+            <View style={{ flex: 1, paddingTop: 15, backgroundColor: '#fff' }}>
                 <Foods navigation={this.props.navigation} />
             </View>
         )
@@ -39,7 +39,7 @@ export default class HomeScreen extends React.Component {
 }
 
 HomeScreen.navigationOptions = {
-    header: null,
+    title: 'Home',
 }
 
 const styles = StyleSheet.create({

@@ -11,7 +11,7 @@ import {
 } from 'react-native'
 import { Card, ListItem, Button, Icon } from 'react-native-elements'
 import axios from 'axios'
-
+import DatesLeftBar from '../components/datesLeftBar'
 export default class Foods extends React.Component {
     constructor(props) {
         super(props)
@@ -61,11 +61,21 @@ export default class Foods extends React.Component {
     }
     render() {
         const FoodCard = ({ item }) => {
+            let entryDate = new Date(item.entryDate)
+            // let expireDate = new Date(item.entryDate)
+            let expireDate = new Date(
+                entryDate.getTime() + 86400000 * item.duration
+            )
             // Food Card item
             return (
                 <View style={{ flex: 1 }}>
                     <TouchableOpacity onPress={() => this.handlePress(item)}>
-                        <Card containerStyle={{ padding: 0, elevation: 5 }}>
+                        <Card
+                            containerStyle={{
+                                padding: 0,
+                                elevation: 5,
+                            }}
+                        >
                             <ListItem
                                 roundAvatar
                                 title={item.name}
@@ -75,6 +85,13 @@ export default class Foods extends React.Component {
                                     },
                                 }}
                             />
+                            <View style={{ marginBottom: 10 }}>
+                                <DatesLeftBar
+                                    entryDate={entryDate.toString()}
+                                    expireDate={expireDate.toString()}
+                                    duration={item.duration}
+                                />
+                            </View>
                         </Card>
                     </TouchableOpacity>
                 </View>
