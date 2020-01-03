@@ -76,6 +76,7 @@ export default class FoodScreen extends React.Component {
                 <DatesLeftBar
                     entryDate={entryDate.toString()}
                     expireDate={expireDate.toString()}
+                    duration={item.duration}
                 />
             </View>
         )

@@ -22,11 +22,34 @@ const styles = StyleSheet.create({
 class DatesLeftBar extends React.Component {
     constructor(props) {
         super(props)
-        this.state = {
-            entryDate: this.props.entryDate,
-            expireDate: this.props.expireDate,
-            date: new Date(),
+        let entryDate = new Date(this.props.entryDate)
+        let date = new Date()
+        let daysPassed = Math.round((date - entryDate) / 86400000)
+        let daysPercent = 100 - (daysPassed / this.props.duration) * 100
+        let parentContainer
+        let childContainer
+        if (daysPercent > 80) {
+            parentContainer = '#CFE5C5'
+            childContainer = '#93C47D'
+        } else if (daysPercent > 40) {
+            parentContainer = '#FFEEBA'
+            childContainer = '#FFD966'
+        } else {
+            parentContainer = '#E99F9E'
+            childContainer = '#CF2A27'
         }
+        this.state = {
+            daysPercent: daysPercent,
+            parentContainer: parentContainer,
+            childContainer: childContainer,
+        }
+    }
+    calculateDaysPassed = () => {
+        let entryDate = new Date(this.props.entryDate)
+        let date = new Date()
+        let daysPassed = Math.round((date - entryDate) / 86400000)
+        let daysPercent = 100 - (daysPassed / this.props.duration) * 100
+        return daysPercent
     }
     render() {
         return (
@@ -35,17 +58,17 @@ class DatesLeftBar extends React.Component {
                 <View
                     style={{
                         flexDirection: 'row',
-                        backgroundColor: 'rgba(0,0,255, 0.5)',
-                        height: 9,
+                        backgroundColor: this.state.parentContainer,
+                        height: 5,
                         marginHorizontal: '10%',
                     }}
                 >
                     <View
                         style={{
                             flexDirection: 'row',
-                            backgroundColor: 'rgba(0,0,255, 1)',
-                            height: 9,
-                            width: '80%',
+                            backgroundColor: this.state.childContainer,
+                            height: 5,
+                            width: `${this.state.daysPercent}%`,
                         }}
                     />
                 </View>
