@@ -65,7 +65,7 @@ export default class Foods extends React.Component {
             return (
                 <View style={{ flex: 1 }}>
                     <TouchableOpacity onPress={() => this.handlePress(item)}>
-                        <Card containerStyle={{ padding: 0 }}>
+                        <Card containerStyle={{ padding: 0, elevation: 5 }}>
                             <ListItem
                                 roundAvatar
                                 title={item.name}

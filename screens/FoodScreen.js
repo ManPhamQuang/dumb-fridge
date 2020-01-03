@@ -9,6 +9,8 @@ import {
     TouchableOpacity,
     View,
 } from 'react-native'
+import { ListItem, Divider } from 'react-native-elements'
+import DatesLeftBar from '../components/datesLeftBar'
 
 export default class FoodScreen extends React.Component {
     constructor(props) {
@@ -31,17 +33,49 @@ export default class FoodScreen extends React.Component {
     // );
     render() {
         const { navigation } = this.props
+        var options = {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+        }
         const item = navigation.getParam('item', 'not found')
-        const entryDate = new Date(item.entryDate)
-        const expireDate = new Date(item.entryDate + item.duration)
-        console.log('entry date: ' + entryDate)
-        console.log('expire date: ' + expireDate)
+        let entryDate = new Date(item.entryDate)
+        // let expireDate = new Date(item.entryDate)
+        let expireDate = new Date(
+            entryDate.getTime() + 86400000 * item.duration
+        )
         return (
             <View style={{ flex: 1, backgroundColor: '#fff' }}>
-                <Text>{item.name}</Text>
-                <Image
-                    source={{ uri: item.image.publicUrlTransformed }}
-                    style={{ width: 100, height: 100 }}
+                <ListItem
+                    leftAvatar={{
+                        source: { uri: item.image.publicUrlTransformed },
+                    }}
+                    title={item.name}
+                    subtitle={item.duration.toString()}
+                    bottomDivider
+                />
+                <ListItem
+                    title={`Entry date: ${entryDate.toLocaleDateString(
+                        'en-US',
+                        options
+                    )}`}
+                    bottomDivider
+                />
+                <ListItem
+                    title={`Estimated duration: ${item.duration.toString()}`}
+                    bottomDivider
+                />
+                <ListItem
+                    title={`Estimated expiration date: ${expireDate.toLocaleDateString(
+                        'en-US',
+                        options
+                    )}`}
+                    bottomDivider
+                />
+                <DatesLeftBar
+                    entryDate={entryDate.toString()}
+                    expireDate={expireDate.toString()}
                 />
             </View>
         )
