@@ -45,6 +45,8 @@ export default class FoodScreen extends React.Component {
         let expireDate = new Date(
             entryDate.getTime() + 86400000 * item.duration
         )
+        let daysPassed = Math.round((new Date() - entryDate) / 86400000)
+
         return (
             <View style={{ flex: 1, backgroundColor: '#fff' }}>
                 <ListItem
@@ -73,6 +75,7 @@ export default class FoodScreen extends React.Component {
                     )}`}
                     bottomDivider
                 />
+                <ListItem title={`Days left: ${daysPassed}`} bottomDivider />
                 <DatesLeftBar
                     entryDate={entryDate.toString()}
                     expireDate={expireDate.toString()}
