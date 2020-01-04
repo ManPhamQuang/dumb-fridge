@@ -56,24 +56,24 @@ export default function Recipes() {
     const RecipeCard = ({ item }) => {
         return (
             <View style={{ flex: 1 }} key={item.id}>
-                <TouchableOpacity onPress={() => this.handlePress(item)}>
-                    <Card
-                        containerStyle={{
-                            padding: 0,
-                            elevation: 5,
+                <Card
+                    containerStyle={{
+                        padding: 0,
+                        elevation: 5,
+                    }}
+                >
+                    <ListItem
+                        disabled={false}
+                        disabledStyle={{ opacity: 0.5 }}
+                        roundAvatar
+                        title={item.name}
+                        leftAvatar={{
+                            source: {
+                                uri: item.image.publicUrlTransformed,
+                            },
                         }}
-                    >
-                        <ListItem
-                            roundAvatar
-                            title={item.name}
-                            leftAvatar={{
-                                source: {
-                                    uri: item.image.publicUrlTransformed,
-                                },
-                            }}
-                        />
-                    </Card>
-                </TouchableOpacity>
+                    />
+                </Card>
             </View>
         )
     }
