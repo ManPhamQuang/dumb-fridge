@@ -7,7 +7,9 @@ import {
     Text,
     TouchableOpacity,
     View,
+    FlatList,
 } from 'react-native'
+import { Card, ListItem, Button, Icon } from 'react-native-elements'
 import axios from 'axios'
 
 export default function Recipes() {
@@ -51,11 +53,41 @@ export default function Recipes() {
         fetchRecipes()
     }, [])
 
+    const RecipeCard = ({ item }) => {
+        return (
+            <View style={{ flex: 1 }} key={item.id}>
+                <TouchableOpacity onPress={() => this.handlePress(item)}>
+                    <Card
+                        containerStyle={{
+                            padding: 0,
+                            elevation: 5,
+                        }}
+                    >
+                        <ListItem
+                            roundAvatar
+                            title={item.name}
+                            leftAvatar={{
+                                source: {
+                                    uri: item.image.publicUrlTransformed,
+                                },
+                            }}
+                        />
+                    </Card>
+                </TouchableOpacity>
+            </View>
+        )
+    }
     return (
-        <View>
-            {recipes.map((recipe, index) => (
-                <Text key={index}>{recipe.name}</Text>
-            ))}
+        <View style={{ flex: 1 }}>
+            <FlatList
+                data={recipes}
+                renderItem={({ item }) => <RecipeCard item={item} />}
+                keyExtractor={(item, index) => {
+                    return item.id
+                }}
+                horizontal={false}
+                numColumns={2}
+            />
         </View>
     )
 }
