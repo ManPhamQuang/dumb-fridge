@@ -26,7 +26,7 @@ export default function Recipes() {
                 data: {
                     query: `
                     query foodInFridge{
-                        allRecipes {
+                        allRecipes(where: {ingredients_every: {quantity_gt: 0}} ) {
                             name,
                             id,
                             ingredients{
