@@ -12,14 +12,18 @@ import {
 import { Card, ListItem, Button, Icon } from 'react-native-elements'
 import axios from 'axios'
 import DatesLeftBar from '../components/datesLeftBar'
-export default class Foods extends React.Component {
+export default class Foods extends React.PureComponent {
     constructor(props) {
         super(props)
-        this.state = { foodInFridge: [] }
+        this.state = { foodInFridge: [], refreshing: true }
     }
     componentDidMount() {
         console.log('hello world')
         // Get food
+        this.fetchFood()
+    }
+
+    fetchFood = () => {
         axios({
             url: 'https://dumb-fridge.herokuapp.com/admin/api',
             method: 'post',
@@ -29,7 +33,7 @@ export default class Foods extends React.Component {
             data: {
                 query: `
                 query foodInFridge{
-                    allFoods{
+                    allFoods(where: { quantity_gt: 0 } ){
                         name,
                         duration,
                         quantity,
@@ -47,6 +51,7 @@ export default class Foods extends React.Component {
             .then(res => {
                 this.setState({
                     foodInFridge: res.data.data.allFoods,
+                    refreshing: false,
                 })
             })
             .catch(err => {
@@ -106,6 +111,15 @@ export default class Foods extends React.Component {
                     keyExtractor={(item, index) => {
                         return item.id
                     }}
+                    onRefresh={() => {
+                        this.setState(
+                            {
+                                refreshing: true,
+                            },
+                            () => this.fetchFood()
+                        )
+                    }}
+                    refreshing={this.state.refreshing}
                     horizontal={false}
                     numColumns={2}
                 />
