@@ -15,22 +15,24 @@ import axios from 'axios'
 
 export default function Recipes() {
     const [recipes, setRecipes] = useState([])
+    const [ingredients, setIngredients] = useState([])
+    const [refreshing, setRefreshing] = useState(true)
     const { navigate } = useNavigation()
-    useEffect(() => {
-        async function fetchRecipes() {
-            const data = await axios({
-                url: 'https://dumb-fridge.herokuapp.com/admin/api',
-                method: 'post',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                data: {
-                    query: `
+    async function fetchRecipes() {
+        const data = await axios({
+            url: 'https://dumb-fridge.herokuapp.com/admin/api',
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            data: {
+                query: `
                     query foodInFridge{
-                        allRecipes(where: {ingredients_every: {quantity_gt: 0}} ) {
+                        allRecipes{
                             name,
                             id,
                             ingredients{
+                                id
                                 name,
                                 image{
                                     publicUrlTransformed
@@ -47,14 +49,59 @@ export default function Recipes() {
                         }
                     }
                     `,
-                },
-            })
-            setRecipes(data.data.data.allRecipes)
-        }
+            },
+        })
+        setRecipes(data.data.data.allRecipes)
+        setRefreshing(false)
+    }
+
+    async function fetchIngredients() {
+        const data = await axios({
+            url: 'https://dumb-fridge.herokuapp.com/admin/api',
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            data: {
+                query: `
+                query foodInFridge{
+                    allFoods(where: { quantity_gt: 0 } ){
+                        name,
+                        duration,
+                        quantity,
+                        entryDate,
+                        id,
+                        image{
+                          publicUrlTransformed
+                          filename
+                        }
+                    }
+                }
+            `,
+            },
+        })
+        setIngredients(data.data.data.allFoods)
+        setRefreshing(false)
+    }
+
+    useEffect(() => {
         fetchRecipes()
+        fetchIngredients()
     }, [])
 
     const RecipeCard = ({ item }) => {
+        let ingredients_needed = item.ingredients.map(
+            ingredients => ingredients.name
+        )
+        let ingredients_available = ingredients.map(
+            ingredient => ingredient.name
+        )
+        let checker = (arr, target) => target.every(v => arr.includes(v))
+        if (checker(ingredients_available, ingredients_needed)) {
+            console.log(`${item.name} have enough ingredients`)
+        }
+        const found = item.ingredients.some(r => ingredients.includes(r))
+        // console.log(found)
         return (
             <View style={{ flex: 1 }} key={item.id}>
                 <Card
@@ -64,11 +111,17 @@ export default function Recipes() {
                     }}
                 >
                     <ListItem
-                        disabled={false}
+                        disabled={
+                            !checker(ingredients_available, ingredients_needed)
+                        }
                         disabledStyle={{ opacity: 0.5 }}
                         roundAvatar
                         title={item.name}
-                        onPress={() => navigate('RecipeScreen')}
+                        onPress={() =>
+                            navigate('RecipeScreen', {
+                                item: item,
+                            })
+                        }
                         leftAvatar={{
                             source: {
                                 uri: item.image.publicUrlTransformed,
@@ -79,6 +132,7 @@ export default function Recipes() {
             </View>
         )
     }
+
     return (
         <View style={{ flex: 1 }}>
             <FlatList
@@ -88,7 +142,11 @@ export default function Recipes() {
                     return item.id
                 }}
                 horizontal={false}
-                numColumns={2}
+                onRefresh={() => {
+                    fetchRecipes()
+                    setRefreshing(true)
+                }}
+                refreshing={refreshing}
             />
         </View>
     )

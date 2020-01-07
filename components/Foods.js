@@ -121,7 +121,6 @@ export default class Foods extends React.PureComponent {
                     }}
                     refreshing={this.state.refreshing}
                     horizontal={false}
-                    numColumns={2}
                 />
             </View>
         )
