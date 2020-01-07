@@ -12,10 +12,13 @@ import {
 
 import { MonoText } from '../components/StyledText'
 import Foods from '../components/Foods'
-
+import sendExpo from '../components/sendExpo'
 export default class HomeScreen extends React.Component {
     constructor(props) {
         super(props)
+    }
+    componentDidMount() {
+        sendExpo()
     }
     // return (
     //   <View style={styles.container}>
