@@ -10,11 +10,12 @@ import {
     FlatList,
 } from 'react-native'
 import { Card, ListItem, Button, Icon } from 'react-native-elements'
+import { useNavigation } from 'react-navigation-hooks'
 import axios from 'axios'
 
 export default function Recipes() {
     const [recipes, setRecipes] = useState([])
-
+    const { navigate } = useNavigation()
     useEffect(() => {
         async function fetchRecipes() {
             const data = await axios({
@@ -67,6 +68,7 @@ export default function Recipes() {
                         disabledStyle={{ opacity: 0.5 }}
                         roundAvatar
                         title={item.name}
+                        onPress={() => navigate('RecipeScreen')}
                         leftAvatar={{
                             source: {
                                 uri: item.image.publicUrlTransformed,

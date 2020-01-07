@@ -75,7 +75,10 @@ export default class FoodScreen extends React.Component {
                     )}`}
                     bottomDivider
                 />
-                <ListItem title={`Days left: ${daysPassed}`} bottomDivider />
+                <ListItem
+                    title={`Days left: ${item.duration - daysPassed}`}
+                    bottomDivider
+                />
                 <DatesLeftBar
                     entryDate={entryDate.toString()}
                     expireDate={expireDate.toString()}

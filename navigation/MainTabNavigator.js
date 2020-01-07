@@ -7,6 +7,7 @@ import TabBarIcon from '../components/TabBarIcon'
 import HomeScreen from '../screens/HomeScreen'
 import FoodScreen from '../screens/FoodScreen'
 import RecipesScreen from '../screens/RecipesScreen'
+import RecipeScreen from '../screens/RecipeScreen'
 import SettingsScreen from '../screens/SettingsScreen'
 
 const config = Platform.select({
@@ -41,6 +42,7 @@ HomeStack.path = ''
 const RecipesStack = createStackNavigator(
     {
         Recipes: RecipesScreen,
+        RecipeScreen: RecipeScreen,
     },
     config
 )
