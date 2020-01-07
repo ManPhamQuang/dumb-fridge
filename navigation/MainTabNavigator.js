@@ -59,29 +59,29 @@ RecipesStack.navigationOptions = {
 
 RecipesStack.path = ''
 
-const SettingsStack = createStackNavigator(
-    {
-        Settings: SettingsScreen,
-    },
-    config
-)
+// const SettingsStack = createStackNavigator(
+//     {
+//         Settings: SettingsScreen,
+//     },
+//     config
+// )
 
-SettingsStack.navigationOptions = {
-    tabBarLabel: 'Settings',
-    tabBarIcon: ({ focused }) => (
-        <TabBarIcon
-            focused={focused}
-            name={Platform.OS === 'ios' ? 'ios-options' : 'md-options'}
-        />
-    ),
-}
+// SettingsStack.navigationOptions = {
+//     tabBarLabel: 'Settings',
+//     tabBarIcon: ({ focused }) => (
+//         <TabBarIcon
+//             focused={focused}
+//             name={Platform.OS === 'ios' ? 'ios-options' : 'md-options'}
+//         />
+//     ),
+// }
 
-SettingsStack.path = ''
+// SettingsStack.path = ''
 
 const tabNavigator = createBottomTabNavigator({
     HomeStack,
     RecipesStack,
-    SettingsStack,
+    // SettingsStack,
 })
 
 tabNavigator.path = ''
