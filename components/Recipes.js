@@ -144,6 +144,7 @@ export default function Recipes() {
                 horizontal={false}
                 onRefresh={() => {
                     fetchRecipes()
+                    fetchIngredients()
                     setRefreshing(true)
                 }}
                 refreshing={refreshing}
